@@ -1,7 +1,7 @@
 import {PORT} from './config.js'
 import express from 'express'
-import {cartsRouter} from '../routes/cartsRouter.js'
-import {productsRouter} from '../routes/productsRouter.js'
+import {cartsRouter} from '../routers/cartsRouter.js'
+import {productsRouter} from '../routers/productsRouter.js'
 
 const app=express()
 
