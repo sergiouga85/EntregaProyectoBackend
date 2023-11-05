@@ -1,9 +1,15 @@
 import {PORT} from './config.js'
 import express from 'express'
+import {cartsRouter} from '../routes/cartsRouter.js'
+import {productsRouter} from '../routes/productsRouter.js'
 
 const app=express()
 
 app.use(express.json())
+app.use(express.static('./views'))
+
+app.use('/api/carts',cartsRouter)
+app.use('/api/products',productsRouter)
 
 app.get('/',(req, res)=>{
     res.sendFile('index.html', {root:'./views'})

@@ -7,7 +7,7 @@ export const productsRouter =Router()
 const pm= new ProductsManager(PRODUCTOS_JSON)
 
 
-productsRouter.get('/api/products',async (req, res)=>{
+productsRouter.get('/',async (req, res)=>{
     const limit=parseInt(String(req.query.limit));
     try{
         const products= await pm.getAll({limit})
@@ -21,7 +21,7 @@ productsRouter.get('/api/products',async (req, res)=>{
 
 }) 
 
-productsRouter.get('/api/products/:pid', async (req, res)=>{
+productsRouter.get('/:pid', async (req, res)=>{
     const id= req.params.pid
     try{
         const products = await pm.getById(id)
@@ -35,7 +35,7 @@ productsRouter.get('/api/products/:pid', async (req, res)=>{
 }) 
 
 
-productsRouter.post('/api/products',async (req,res)=>{
+productsRouter.post('/',async (req,res)=>{
     const {title,description,code,price,status,stock,category,thumbnail} = req.body
     try{
         const productAgregado = await pm.addProducts({title,description,code,price,status,stock,category,thumbnail});
@@ -48,7 +48,7 @@ productsRouter.post('/api/products',async (req,res)=>{
     }  
 })
 
-productsRouter.put('/api/products/:pid',async (req,res)=>{
+productsRouter.put('/:pid',async (req,res)=>{
     
     const id= req.params.pid
     const {title,description,code,price,status,stock,category,thumbnail} = req.body
@@ -63,7 +63,7 @@ productsRouter.put('/api/products/:pid',async (req,res)=>{
     }  
 })
 
-productsRouter.delete('/api/products/:pid',async (req,res)=>{
+productsRouter.delete('/:pid',async (req,res)=>{
     const id= req.params.pid
     try{
         const productDelete= await pm.deleteProducts(id);

@@ -7,7 +7,7 @@ export const cartsRouter =Router()
 const cm= new CartsManager(CARRITO_JSON)
 
 
-cartsRouter.post('/api/carts', async (req, res) => {
+cartsRouter.post('/', async (req, res) => {
     
     try {
       const newCart = await cm.createCart();
@@ -18,7 +18,7 @@ cartsRouter.post('/api/carts', async (req, res) => {
 });
 
 
-cartsRouter.get('/api/carts/:cid', async (req, res) => {
+cartsRouter.get('/:cid', async (req, res) => {
     try {
       const cartId = req.params.cid;
       const cart = await cm.getCartById(cartId);
@@ -34,7 +34,7 @@ cartsRouter.get('/api/carts/:cid', async (req, res) => {
 });
 
 
-cartsRouter.post('/api/carts/:cid/product/:pid', async (req, res) => {
+cartsRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
       const cartId = req.params.cid;
       const productId = req.params.pid;
