@@ -1,5 +1,4 @@
 import fs from 'fs/promises'
-import {Cart} from './Cart.js'
 
 
 export class CartsManager {
@@ -7,53 +6,70 @@ export class CartsManager {
       this.ruta=ruta
       this.carts = [];
     }
+
+    async getCarts(){
+      const data = await fs.readFile(this.ruta, 'utf-8');
+      this.carts = JSON.parse(data)
+      return this.carts
+    }
+
+    generateId() {
+      return Math.random().toString(36).substring(2, 9);
+    }
   
     async createCart() { 
-      const newCart = new Cart(this.generateId());
+      const id = this.generateId();
+      const newCart= {id, products:[]}
+      this.carts=await this.getCarts()
       this.carts.push(newCart);
       await this.saveData();
-      return newCart;
+      return newCart
     }
   
-    async getCartById(cartId) {
-      return this.carts.find(cart => cart.id === cartId);
+    async getCartById(cartId) {    
+      const carritos= await this.getCarts()
+      const carrito= carritos.find(carrito => carrito.id === cartId)
+
+      if(carrito){
+        return carrito.products
+      }else{
+        throw new Error('Carrito no encontrado' ) 
+      }
     }
+
   
     async addProductToCart(cartId, productId) {
-      const cart = await this.getCartById(cartId);
-      
+
+      const carts= await this.getCarts()
+      const index=carts.findIndex(cart=>cart.id ===cartId)
   
-      if (!cart) {
-        throw new Error('Carrito no encontrado');
+      if(index === -1){
+        throw new Error('Carrito no encontrado' ) 
+      }else{
+        const cartProducts= await this.getCartById(cartId)
+        const existingProductsIndex=cartProducts.findIndex(product=>product.id ===productId)
+        if(existingProductsIndex !== -1){
+          ++cartProducts[existingProductsIndex].quantity
+        }else{
+           cartProducts.push({id:productId,quantity : 1})
+        }
+
+        carts[index].products=cartProducts
+        await fs.writeFile(this.ruta, JSON.stringify(carts, null, 2));
+        console.log("producto agregado con exito");
+        return this.getCarts()
       }
-  
-      cart.addProduct(productId);
-      await this.saveData();
-      return cart.products;
     }
+
   
-    generateId() {
-        return Math.random().toString(36).substring(2, 9);
-      }
-  
-    async saveData() {
+    async saveData(){
       await fs.writeFile(this.ruta, JSON.stringify(this.carts, null, 2));
     }
   
-    async loadData() {
-      try {
-        const data = await fs.readFile(this.ruta, 'utf-8');
-        this.carts = JSON.parse(data).map(cartData => {
-          const cart = new Cart(cartData.id);
-          cart.products = cartData.products;
-          return cart;
-        });
-      } catch (error) {
-        // El archivo no existe o hay un error al leerlo (puede ser normal al inicio)
-        this.carts = [];
-      }
-    }
-  }
+  
+}
 
+
+        
 
         

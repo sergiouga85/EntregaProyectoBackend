@@ -1,6 +1,6 @@
-import { Router } from "express";
-import {PRODUCTOS_JSON} from './config.js'
-import {ProductsManager} from './ProductsManager.js'
+import { Router } from "express"
+import {PRODUCTOS_JSON} from '../src/config.js'
+import {ProductsManager} from '../src/ProductsManager.js'
 
 export const productsRouter =Router()
 

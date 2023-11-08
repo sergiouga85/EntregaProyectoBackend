@@ -1,7 +1,8 @@
-import {PORT} from './config.js'
+import {PORT,CARRITO_JSON} from './config.js'
 import express from 'express'
-import {cartsRouter} from '../routers/cartsRouter.js'
-import {productsRouter} from '../routers/productsRouter.js'
+import {cartsRouter} from '../routes/cartsRouter.js'
+import {productsRouter} from '../routes/productsRouter.js'
+import { CartsManager } from './CartsManager.js'
 
 const app=express()
 
@@ -22,7 +23,6 @@ app.use((err,req,res,next)=>{
     })
 })
 
-app.listen(PORT,async ()=>{
-    await cm.loadData(); 
+app.listen(PORT,async ()=>{ 
     console.log(`conectado y escuchando en puerto ${PORT}`)
 })
